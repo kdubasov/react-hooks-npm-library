@@ -1,0 +1,15 @@
+.wrapper {
+   height: 200px;
+   padding: 10px;
+
+   display: flex;
+   flex-direction: column;
+   align-items: flex-start;
+   gap: 10px;
+
+   background: #222222;
+   border: 1px solid #3D3D3D;
+
+   overflow-y: auto;
+   border-radius: 10px;
+}
