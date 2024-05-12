@@ -1,6 +1,6 @@
-// стандартный файл для экспорта, отсюда экспортить дефолтные компоненты
-// тестировать можно из папки src (прям туда import пишешь из lib/main.ts и смотришь)
-// если нужны какие-то библиотеки лучше согласовать с @kdubasov (Кирилл Дубасов)
-import Test from './Test.tsx';
-
-export { Test };
+export { useEventListener } from '@/hooks/useEventListener';
+export { useClickAway } from '@/hooks/useClickAway.ts';
+export { useIsMounted } from '@/hooks/useIsMounted';
+export { useHover } from '@/hooks/useHover';
+export { useInterval } from '@/hooks/useInterval';
+export { useCopy } from '@/hooks/useCopy';
