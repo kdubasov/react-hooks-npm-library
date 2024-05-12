@@ -1,5 +1,6 @@
 import Block from './Block';
 import styles from './main.module.css';
+import { useBattery } from '@/hooks/useBattery.ts';
 import { useClickAway } from '@/hooks/useClickAway.ts';
 import { useCopy } from '@/hooks/useCopy.ts';
 import { useHover } from '@/hooks/useHover.ts';
@@ -19,6 +20,8 @@ const App = () => {
   useClickAway(refShow, isShow, setIsShow);
   const [text, copy] = useCopy();
   const [inputCopyValue, setInputCopyValue] = useState<null | string>(null);
+  const { error, isReady, batteryInfo } = useBattery();
+  console.log(batteryInfo);
 
   const resizeHandler = (event: Event) => {
     console.log(event.target);
@@ -88,6 +91,38 @@ const App = () => {
             <i>{text ?? 'None value'}</i>
           </b>
         </p>
+      </Block>
+
+      <Block>
+        <span className={styles.name}>#useBattery</span>
+        <table>
+          <tbody>
+            <tr>
+              <td>Battery info is enabled:</td>
+              <td>
+                <b>{JSON.stringify(isReady)?.toUpperCase()}</b>
+              </td>
+            </tr>
+            {batteryInfo && (
+              <tr>
+                <td>Battery info:</td>
+                <td>
+                  Charging: {JSON.stringify(batteryInfo?.charging)?.toUpperCase()} <br />
+                  Percent:{' '}
+                  <b style={{ color: batteryInfo.level >= 0.9 ? 'green' : 'orange' }}>{batteryInfo.level * 100}%</b>
+                </td>
+              </tr>
+            )}
+            {error && (
+              <tr>
+                <td>Battery error:</td>
+                <td>
+                  <b>{error}</b>
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </Block>
     </div>
   );
