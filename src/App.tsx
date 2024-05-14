@@ -3,6 +3,7 @@ import styles from './main.module.css';
 import { useBattery } from '@/hooks/useBattery.ts';
 import { useClickAway } from '@/hooks/useClickAway.ts';
 import { useCopy } from '@/hooks/useCopy.ts';
+import { useGeolocation } from '@/hooks/useGeolocation.ts';
 import { useHover } from '@/hooks/useHover.ts';
 import { useInterval } from '@/hooks/useInterval.ts';
 import { useIsMounted } from '@/hooks/useIsMounted.ts';
@@ -22,6 +23,7 @@ const App = () => {
   const [inputCopyValue, setInputCopyValue] = useState<null | string>(null);
   const { error, isReady, batteryInfo } = useBattery();
   const [activeBeforeUnload, setActiveBeforeUnload] = useState<boolean>(false);
+  const { error: locationError, data, isLoading } = useGeolocation();
 
   const resizeHandler = (event: Event) => {
     console.log(event.target);
@@ -137,6 +139,13 @@ const App = () => {
           />
           Toggle for <b>{activeBeforeUnload ? 'DISABLE' : 'ENABLE'}</b> before unload alert
         </label>
+      </Block>
+
+      <Block>
+        <span className={styles.name}>#useGeolocation</span>
+        {isLoading && 'Waiting geolocation data...'}
+        {locationError && <p style={{ color: 'red' }}>{locationError}</p>}
+        {data && JSON.stringify(data)}
       </Block>
     </div>
   );
