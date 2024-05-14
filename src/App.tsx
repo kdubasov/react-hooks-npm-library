@@ -6,7 +6,7 @@ import { useCopy } from '@/hooks/useCopy.ts';
 import { useHover } from '@/hooks/useHover.ts';
 import { useInterval } from '@/hooks/useInterval.ts';
 import { useIsMounted } from '@/hooks/useIsMounted.ts';
-import { useEventListener } from '@/main.ts';
+import { useBeforeUnload, useEventListener } from '@/main.ts';
 import { useRef, useState } from 'react';
 
 const App = () => {
@@ -21,7 +21,7 @@ const App = () => {
   const [text, copy] = useCopy();
   const [inputCopyValue, setInputCopyValue] = useState<null | string>(null);
   const { error, isReady, batteryInfo } = useBattery();
-  console.log(batteryInfo);
+  const [activeBeforeUnload, setActiveBeforeUnload] = useState<boolean>(false);
 
   const resizeHandler = (event: Event) => {
     console.log(event.target);
@@ -35,6 +35,7 @@ const App = () => {
 
   useInterval(intervalHandler, intervalDelay);
   useEventListener('resize', resizeHandler);
+  useBeforeUnload(activeBeforeUnload);
 
   return (
     <div className={styles.main}>
@@ -123,6 +124,19 @@ const App = () => {
             )}
           </tbody>
         </table>
+      </Block>
+
+      <Block>
+        <span className={styles.name}>#useBeforeUnload</span>
+        <label>
+          <input
+            style={{ marginRight: 5 }}
+            checked={activeBeforeUnload}
+            onChange={() => setActiveBeforeUnload((prev) => !prev)}
+            type={'checkbox'}
+          />
+          Toggle for <b>{activeBeforeUnload ? 'DISABLE' : 'ENABLE'}</b> before unload alert
+        </label>
       </Block>
     </div>
   );
