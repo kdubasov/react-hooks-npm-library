@@ -7,6 +7,7 @@ import { useGeolocation } from '@/hooks/useGeolocation.ts';
 import { useHover } from '@/hooks/useHover.ts';
 import { useInterval } from '@/hooks/useInterval.ts';
 import { useIsMounted } from '@/hooks/useIsMounted.ts';
+import { useNetwork } from '@/hooks/useNetwork.ts';
 import { useBeforeUnload, useEventListener } from '@/main.ts';
 import { useRef, useState } from 'react';
 
@@ -18,12 +19,12 @@ const App = () => {
   const isMounted = useIsMounted();
   const btnRef = useRef<null | HTMLButtonElement>(null);
   const isHovered = useHover(btnRef);
-  useClickAway(refShow, isShow, setIsShow);
   const [text, copy] = useCopy();
   const [inputCopyValue, setInputCopyValue] = useState<null | string>(null);
   const { error, isReady, batteryInfo } = useBattery();
   const [activeBeforeUnload, setActiveBeforeUnload] = useState<boolean>(false);
   const { error: locationError, data, isLoading } = useGeolocation();
+  const { error: networkError, data: networkData } = useNetwork();
 
   const resizeHandler = (event: Event) => {
     console.log(event.target);
@@ -35,6 +36,7 @@ const App = () => {
     console.log('Interval triggered');
   };
 
+  useClickAway(refShow, isShow, setIsShow);
   useInterval(intervalHandler, intervalDelay);
   useEventListener('resize', resizeHandler);
   useBeforeUnload(activeBeforeUnload);
@@ -146,6 +148,12 @@ const App = () => {
         {isLoading && 'Waiting geolocation data...'}
         {locationError && <p style={{ color: 'red' }}>{locationError}</p>}
         {data && JSON.stringify(data)}
+      </Block>
+
+      <Block>
+        <span className={styles.name}>#useNetwork</span>
+        {locationError && <p style={{ color: 'red' }}>{networkError}</p>}
+        {data && JSON.stringify(networkData)}
       </Block>
     </div>
   );
